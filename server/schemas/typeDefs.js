@@ -26,7 +26,6 @@ type Book{
 
   type Query {
     me: User
-    
   }
 
   type Mutation {
@@ -46,15 +45,13 @@ type Book{
       description:String!,
       bookId:String!,
       title: String!,
-      bookId: String!,
       image: String,
       link: String
     ): User
 
     removeBook(
-      bookId:String
+      bookId:String!
     ):User
-
   }
 `;
 
