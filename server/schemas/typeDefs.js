@@ -1,20 +1,28 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-  type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-    savedBooks:[Book]
-    link:String
-  }
 
+type Auth {
+  token: ID!
+  user: User
+}
 
-  type Auth {
-    token: ID!
-    user: User
-  }
+type User {
+  _id: ID
+  username: String
+  email: String
+  bookCount: Int
+  savedBooks:[Book]
+}
+
+type Book{
+  bookId: String
+  authors:[String]
+  description: String
+  title: String
+  image: String
+  link: String
+}
 
   type Query {
     me: User
@@ -22,64 +30,31 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(sss description:String!, title: String!, bookId: Id!, image: image, link:link): User
-    
-    addThought(thoughtText: String!): Thought
-    addReaction(thoughtId: ID!, reactionBody: String!): Thought
-    addFriend(friendId: ID!): User
-  }
-`;
+    login(
+      email: String!,
+      password: String!
+    ): Auth
 
-module.exports = typeDefs;
-const { gql } = require('apollo-server-express');
+    addUser(
+      username: String!,
+      email: String!,
+      password: String!
+    ): Auth
 
-const typeDefs = gql`
-  type User {
-    _id: ID
-    username: String
-    email: String
-    friendCount: Int
-    thoughts: [Thought]
-    friends: [User]
-  }
+    saveBook(
+      authors[String],
+      description:String!,
+      bookId:String!,
+      title: String!,
+      bookId: String!,
+      image: String,
+      link: String
+    ): User
 
-  type Thought {
-    _id: ID
-    thoughtText: String
-    createdAt: String
-    username: String
-    reactionCount: Int
-    reactions: [Reaction]
-  }
+    removeBook(
+      bookId:String
+    ):User
 
-  type Reaction {
-    _id: ID
-    reactionBody: String
-    createdAt: String
-    username: String
-  }
-
-  type Auth {
-    token: ID!
-    user: User
-  }
-
-  type Query {
-    me: User
-    users: [User]
-    user(username: String!): User
-    thoughts(username: String): [Thought]
-    thought(_id: ID!): Thought
-  }
-
-  type Mutation {
-    login(email: String!, password: String!): Auth
-    addUser(username: String!, email: String!, password: String!): Auth
-    addThought(thoughtText: String!): Thought
-    addReaction(thoughtId: ID!, reactionBody: String!): Thought
-    addFriend(friendId: ID!): User
   }
 `;
 
