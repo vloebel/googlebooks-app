@@ -9,28 +9,28 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
 
-//vll: very confused here. Instructions say:
-// Remove the useEffect() Hook that sets the state for
-// UserData Instead, use theuseQuery()
-// Hook to execute the GET_ME
-// query onload and save it to a variable named
-// userData
-// const [userData, setUserData] = useState({});
+  //vll: Instructions say:
+  // Remove the useEffect() Hook that sets the state for
+  // UserData Instead, use theuse Query()
+  // Hook to execute the GET_ME query onload
+  // and save it to  variable named userData
+  // example from module:
+  //const { loading, data } = useQuery(QUERY_THOUGHTS);
+  //const thoughts = data?.thoughts || [];
 
-const { userData } = useQuery(GET_ME);
-
-
-
-  // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-
+  const { loading, userData } = useQuery(GET_ME);
+  const user = userData?.getMe || [];
+  // vll: why an array? remove book returns a user
+  
   // Use the  useMutation() Hook to execute the
-  // REMOVE_BOOK  mutationin the   handleDeleteBook()
+  // REMOVE_BOOK  mutation in the   handleDeleteBook()
   // function instead of the   deleteBook()
   // function that's imported from  API
-
+  
+  const [removeBook] = useMutation(REMOVE_BOOK);
+  
   // vll: ?? still not sure this is how to get the token
-
+  
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -42,9 +42,9 @@ const { userData } = useQuery(GET_ME);
     // only saved to local storage. The original code passed in bookID,token
     // so that could specify the user, but here we don't!!
     // the resolver here doesn't have a user on it.
-//WAIT *** App.js puts it in the headers so we have it already?
+    //WAIT *** App.js puts it in the headers so we have it already?
     try {
-      const response = await removeBook (bookId);
+      const response = await removeBook(bookId);
 
       if (!response.ok) {
         throw new Error('something went wrong!');
