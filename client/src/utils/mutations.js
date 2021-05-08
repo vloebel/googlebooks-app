@@ -33,6 +33,8 @@ export const ADD_USER = gql`
 //part 2 - post / put;
 //part 3: returned object (user)
 // do we need to return the book parameters?
+// vll:?? Question about the return parameters and how they
+// relate to bookToSave in searchBooks.js
 export const SAVE_BOOK = gql`
   mutation saveBook(
     $authors[String],
