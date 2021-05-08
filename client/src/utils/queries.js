@@ -1,18 +1,24 @@
 import gql from 'graphql-tag';
 
+//vll:?? Do we need image and link for 
+// books? The instructions say yes, but
+// are we storing an image?
 
 
-
-export const QUERY_ME_BASIC = gql`
+export const GET_ME = gql`
   {
-    me {
+    getMe {
       _id
       username
       email
-      friendCount
-      friends {
-        _id
-        username
+      bookCount: Int
+      savedBooks:{
+        bookId
+        authors
+        description
+        title
+        image
+        link
       }
     }
   }

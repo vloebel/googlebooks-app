@@ -16,6 +16,7 @@ const SearchBooks = () => {
   //   - saved bookId values
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  // searched book ids will be saved to local storage, not the database
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
@@ -71,7 +72,9 @@ const SearchBooks = () => {
 // vll: USE the SAVE_BOOK Mutation instead of saveBook
     // BUT THEY HAVE THE SAME NAME, SO LEAVE?
     try {
-      const response = await saveBook(bookToSave, token);
+      const response =   await saveBook({
+        variables: { ...bookToSave } 
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');

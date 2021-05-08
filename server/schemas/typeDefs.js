@@ -1,5 +1,10 @@
 const { gql } = require('apollo-server-express');
 
+//vll:?? Do we need image and link for 
+// books? The instructions say yes, but
+// are we storing an image?
+
+
 const typeDefs = gql`
 
 type Auth {
