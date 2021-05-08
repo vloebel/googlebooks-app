@@ -1,12 +1,18 @@
-// route to get logged in user's info (needs the token)
-export const getMe = (token) => {
-  return fetch('/api/users/me', {
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: `Bearer ${token}`,
-    },
-  });
+// vll: THE FETCH TO GOOGLE API REMAINS UNCHANGED
+// make a search to google books api
+// https://www.googleapis.com/books/v1/volumes?q=harry+potter
+export const searchGoogleBooks = (query) => {
+  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
 };
+// // route to get logged in user's info (needs the token)
+// export const getMe = (token) => {
+//   return fetch('/api/users/me', {
+//     headers: {
+//       'Content-Type': 'application/json',
+//       authorization: `Bearer ${token}`,
+//     },
+//   });
+// };
 
 //vll: Replaced with graphql addUser
 // export const createUser = (userData) => {
@@ -54,9 +60,3 @@ export const getMe = (token) => {
 // };
 
 
-// vll: THE FETCH TO GOOGLE API REMAINS UNCHANGED
-// make a search to google books api
-// https://www.googleapis.com/books/v1/volumes?q=harry+potter
-export const searchGoogleBooks = (query) => {
-  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
-};

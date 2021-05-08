@@ -1,24 +1,36 @@
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { SAVE_BOOK, REMOVE_BOOK } from '../utils/mutations';
-import { QUERY_ME } from '../utils/queries';
-
-import { getMe, deleteBook } from '../utils/API';
+import { REMOVE_BOOK } from '../utils/mutations';
+import { GET_ME } from '../utils/queries';
 
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+
+//vll: very confused here. Instructions say:
+// Remove the useEffect() Hook that sets the state for
+// UserData Instead, use theuseQuery()
+// Hook to execute the GET_ME
+// query onload and save it to a variable named
+// userData
+// const [userData, setUserData] = useState({});
+
+const { userData } = useQuery(GET_ME);
+
+
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
 
-  
+  // Use the  useMutation() Hook to execute the
+  // REMOVE_BOOK  mutationin the   handleDeleteBook()
+  // function instead of the   deleteBook()
+  // function that's imported from  API
 
-  // create function that accepts the book's mongo _id 
-  // value as param and deletes the book from the database
+  // vll: ?? still not sure this is how to get the token
+
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -26,8 +38,13 @@ const SavedBooks = () => {
       return false;
     }
 
+    // vll:?? WHERE is this removing the book FROM? I thought it was
+    // only saved to local storage. The original code passed in bookID,token
+    // so that could specify the user, but here we don't!!
+    // the resolver here doesn't have a user on it.
+//WAIT *** App.js puts it in the headers so we have it already?
     try {
-      const response = await deleteBook(bookId, token);
+      const response = await removeBook (bookId);
 
       if (!response.ok) {
         throw new Error('something went wrong!');

@@ -6,7 +6,8 @@ const {typeDefs, resolvers} = require('./schemas');
 const {authMiddleware} = require('./utils/auth');
 const db = require('./config/connection');
 // vll: some of the routes are still implemented, right?
-const routes = require('./routes');
+// NO: there is a fetch to google api but no endpoints.
+// const routes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
