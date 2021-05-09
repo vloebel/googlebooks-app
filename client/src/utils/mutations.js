@@ -30,46 +30,39 @@ export const ADD_USER = gql`
 // vll:?? Question about the return parameters and how they
 // relate to bookToSave in searchBooks.js
 export const SAVE_BOOK = gql`
-  mutation saveBook(
-    $authors[String],
-    $description:String!,
-    $bookId:String!,
-    $title: String!,
-    $image: String,
-    $link: String) {
-    saveBook(
-      authors:$authors,
-      description: $description,
-      bookId: $bookId,
-      title: $title,
-      image: $image,
-      link: $link) {
-        _id
-        username
-        email
-        savedBooks {
-          authors
-          description
-          bookId
-          title
-          image
-          link
-        }
-      }
-      }
-      }
+  mutation saveBook($authors:[String], $description:String!, $bookId:String!, $title: String!, $image: String, $link: String) {
+    saveBook(authors:$authors, description: $description, bookId: $bookId, title: $title, image: $image, link: $link) {
+      _id
+      username
+      email
+      savedBooks {
+        authors
+        description
+        bookId
+        title
+        image
+        link
+      }   
     }
   }
 `;
 
 //vll:?? Do I need to return the rest of the deleted book info
-// in the returned user?
+// in the returned user? - yes!
 export const REMOVE_BOOK = gql`
   mutation removeBook($bookId:String!) {
     removeBook(bookId: $bookId) {
       _id
       username
       email
+      savedBooks {
+        bookId
+        authors
+        image
+        title
+        description
+        link
+      }
     }
   }
 `;

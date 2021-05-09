@@ -48,7 +48,7 @@ type Book{
     saveBook(
       authors[String],
       description:String!,
-      bookId:String!,
+      bookId:ID!,
       title: String!,
       image: String,
       link: String

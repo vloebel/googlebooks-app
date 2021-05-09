@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/react-hooks';
-import { SAVE_BOOK } from '../../utils/mutations';
+import { SAVE_BOOK } from '../utils/mutations';
 
 
-import Auth from '../utils/auth';
+import  Auth  from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
@@ -18,6 +18,10 @@ const SearchBooks = () => {
   const [searchInput, setSearchInput] = useState('');
   // searched book ids will be saved to local storage, not the database
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+  const [saveBook] = useMutation(SAVE_BOOK);
+  
+  //auth.loggedIn doesn't work in the html!
+  const isLoggedIn = Auth.loggedIn()
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -56,7 +60,7 @@ const SearchBooks = () => {
     } catch (err) {
       console.error(err);
     }
-  }; //  handleFormSubmit
+  }; // end handleFormSubmit
 
 
   // event handler to save book to database
@@ -64,24 +68,13 @@ const SearchBooks = () => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
-    // get token vll:?? IS THIS STILL VALID
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-    if (!token) {
-      return false;
-    }
-// vll: USE the SAVE_BOOK Mutation instead of saveBook
-    // BUT THEY HAVE THE SAME NAME, SO LEAVE?
+
+// vll: USE the SAVE_BOOK Mutation 
     try {
-      const response =   await saveBook({
+      await saveBook({
         variables: { ...bookToSave } 
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      // if book successfully saves to user's account, save book id to state
-      // vll:?? Why do we need to save the bookID? Isnt' in the db?
+//save the IDs in local storage
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
@@ -132,7 +125,7 @@ const SearchBooks = () => {
                   <Card.Title>{book.title}</Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  {Auth.loggedIn() && (
+                  {isLoggedIn && (
                     <Button
                       disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
                       className='btn-block btn-info'
